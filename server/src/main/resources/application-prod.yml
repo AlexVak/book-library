@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    url: jdbc:mysql://book-library-mysql-cluster-ip-service:3306/book_library
+    username: book_library
+    platform: mysql
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    database: mysql
+    show-sql: false
