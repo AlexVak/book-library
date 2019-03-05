@@ -1,6 +1,7 @@
 package com.alexvak.booklibrary.config;
 
 import com.alexvak.booklibrary.service.UserService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -8,25 +9,28 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.security.SecureRandom;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserService userService;
-    private final SecurityUtility securityUtility;
+
+    @Value("${secret.key:secret}")
+    private String secret;
 
     private static final String[] PUBLIC_MATCHERS = {
             "/h2-console/**",
             "/book/**"
     };
 
-    public SecurityConfig(UserService userService, SecurityUtility securityUtility) {
+    public SecurityConfig(UserService userService) {
         this.userService = userService;
-        this.securityUtility = securityUtility;
     }
 
     private BCryptPasswordEncoder passwordEncoder() {
-        return securityUtility.passwordEncoder();
+        return new BCryptPasswordEncoder(12, new SecureRandom(secret.getBytes()));
     }
 
     @Override
@@ -36,7 +40,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll().anyRequest().authenticated();
         httpSecurity.headers().frameOptions().disable();
     }
-
 
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
