@@ -1,36 +1,34 @@
 package com.alexvak.booklibrary.config;
 
 import com.alexvak.booklibrary.service.UserService;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
-import java.security.SecureRandom;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final UserService userService;
+    private final UserDetailsService userService;
+    private final SecurityUtility securityUtility;
 
-    @Value("${secret.key:secret}")
-    private String secret;
 
     private static final String[] PUBLIC_MATCHERS = {
             "/h2-console/**",
             "/book/**"
     };
 
-    public SecurityConfig(UserService userService) {
+    public SecurityConfig(UserService userService, SecurityUtility securityUtility) {
         this.userService = userService;
+        this.securityUtility = securityUtility;
     }
 
     private BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(12, new SecureRandom(secret.getBytes()));
+        return securityUtility.passwordEncoder();
     }
 
     @Override
