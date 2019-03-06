@@ -1,4 +1,4 @@
-package com.alexvak.booklibrary.exceptions;
+package com.alexvak.booklibrary.exception;
 
 public class DuplicateUserFoundException extends RuntimeException {
 

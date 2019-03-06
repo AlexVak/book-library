@@ -2,7 +2,7 @@ package com.alexvak.booklibrary.service;
 
 import com.alexvak.booklibrary.domain.User;
 import com.alexvak.booklibrary.domain.security.UserRole;
-import com.alexvak.booklibrary.exceptions.DuplicateUserFoundException;
+import com.alexvak.booklibrary.exception.DuplicateUserFoundException;
 import com.alexvak.booklibrary.repository.RoleRepository;
 import com.alexvak.booklibrary.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
