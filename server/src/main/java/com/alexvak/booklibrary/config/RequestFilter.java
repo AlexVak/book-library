@@ -31,7 +31,6 @@ public class RequestFilter implements Filter {
         if (!req.getMethod().equalsIgnoreCase("OPTIONS")) {
             filterChain.doFilter(req, res);
         } else {
-            System.out.println("Pre-fight");
             res.setHeader("Access-Control-Allow-Methods", "POST, PUT, GET, DELETE");
             res.setHeader("Access-Control-Max-Age", "3600");
             res.setHeader("Access-Control-Allow-Headers", "authorization, content-type, x-auth-token, " +
